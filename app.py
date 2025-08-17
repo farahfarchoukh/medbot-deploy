@@ -46,17 +46,19 @@ def home():
 def healthz():
     return jsonify(status="ok")
 
-@app.route("/api/predict", methods=["POST"])
-def api_predict():
-    question = (request.get_json() or {}).get("question", "").strip()
-    if not question:
-        return jsonify(error="Missing 'question'"), 400
+@app.route("/predict", methods=["POST"])
+def predict_form():
+    q = (request.form.get("question") or "").strip()
+    if not q:
+        return render_template("index.html", question=q, answer="Please enter a question.")
     try:
-        answer = call_hf_inference(question)
-        return jsonify(answer=answer)
+        answer = call_hf_inference(q)
     except Exception as e:
         app.logger.exception("HF API error")
-        return jsonify(error=str(e)), 500
+        answer = f"Error: {e}"
+    return render_template("index.html", question=q, answer=answer)
+
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")))
