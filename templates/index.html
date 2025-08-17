@@ -1,0 +1,31 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>MedBot</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; max-width: 820px; margin: 32px auto; padding: 0 16px; }
+    .card { border: 1px solid #ddd; border-radius: 10px; padding: 16px; }
+    textarea { width: 100%; min-height: 90px; font-size: 16px; }
+    button { padding: 10px 16px; border: 0; border-radius: 8px; background: #0a7cff; color: #fff; cursor: pointer; }
+    .muted { color: #666; font-size: 14px; }
+    pre { white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>MedBot</h1>
+  <p class="muted">MedBot provides general information only and is not a substitute for professional medical advice. If this may be an emergency, call your local emergency number.</p>
+
+  <form class="card" action="/predict" method="post">
+    <label for="question"><strong>Your question</strong></label><br/>
+    <textarea id="question" name="question" placeholder="e.g., What is diabetes?">{{ question or "" }}</textarea><br/><br/>
+    <button type="submit">Ask</button>
+  </form>
+
+  {% if answer %}
+    <h2>Answer</h2>
+    <pre>{{ answer }}</pre>
+  {% endif %}
+</body>
+</html>
